@@ -1,0 +1,92 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="15505" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="BV1-FR-VrT">
+    <device id="retina6_1" orientation="landscape" appearance="light"/>
+    <dependencies>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="15509"/>
+        <capability name="Safe area layout guides" minToolsVersion="9.0"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <scenes>
+        <!--View Controller-->
+        <scene sceneID="tXr-a1-R10">
+            <objects>
+                <viewController id="BV1-FR-VrT" customClass="ViewController" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="U0K-SW-4ec">
+                        <rect key="frame" x="0.0" y="0.0" width="896" height="414"/>
+                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                        <subviews>
+                            <arscnView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="BrB-h1-WRS">
+                                <rect key="frame" x="0.0" y="0.0" width="896" height="414"/>
+                            </arscnView>
+                            <view hidden="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="LfD-lQ-ivY">
+                                <rect key="frame" x="0.0" y="0.0" width="896" height="414"/>
+                                <color key="backgroundColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                            </view>
+                            <sceneKitView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="8Ia-vG-DCo">
+                                <rect key="frame" x="448" y="0.0" width="448" height="414"/>
+                            </sceneKitView>
+                            <sceneKitView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="c74-Yj-ZuS">
+                                <rect key="frame" x="0.0" y="0.0" width="448" height="414"/>
+                            </sceneKitView>
+                            <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="basic_gunsight" translatesAutoresizingMaskIntoConstraints="NO" id="QXy-RC-E6j">
+                                <rect key="frame" x="209" y="192" width="30" height="30"/>
+                                <constraints>
+                                    <constraint firstAttribute="width" constant="30" id="Mzt-4a-axi"/>
+                                    <constraint firstAttribute="height" constant="30" id="kak-yR-F6Z"/>
+                                </constraints>
+                            </imageView>
+                            <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="basic_gunsight" translatesAutoresizingMaskIntoConstraints="NO" id="LFD-3s-ESE">
+                                <rect key="frame" x="657" y="192" width="30" height="30"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="30" id="87H-TW-hkX"/>
+                                    <constraint firstAttribute="width" constant="30" id="OII-zF-pIv"/>
+                                </constraints>
+                            </imageView>
+                        </subviews>
+                        <color key="backgroundColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
+                        <constraints>
+                            <constraint firstAttribute="bottom" secondItem="c74-Yj-ZuS" secondAttribute="bottom" id="7kz-KF-Ovj"/>
+                            <constraint firstAttribute="trailing" secondItem="LfD-lQ-ivY" secondAttribute="trailing" id="8q6-A0-3nV"/>
+                            <constraint firstItem="c74-Yj-ZuS" firstAttribute="top" secondItem="U0K-SW-4ec" secondAttribute="top" id="BVH-5B-mzL"/>
+                            <constraint firstItem="BrB-h1-WRS" firstAttribute="leading" secondItem="U0K-SW-4ec" secondAttribute="leading" id="GsS-dJ-CKf"/>
+                            <constraint firstAttribute="trailing" secondItem="8Ia-vG-DCo" secondAttribute="trailing" id="JUK-ln-Wsr"/>
+                            <constraint firstItem="8Ia-vG-DCo" firstAttribute="top" secondItem="U0K-SW-4ec" secondAttribute="top" id="KWc-IH-PH2"/>
+                            <constraint firstItem="BrB-h1-WRS" firstAttribute="bottom" secondItem="U0K-SW-4ec" secondAttribute="bottom" id="VpT-BR-CcM"/>
+                            <constraint firstItem="BrB-h1-WRS" firstAttribute="trailing" secondItem="U0K-SW-4ec" secondAttribute="trailing" id="XyZ-9z-H8e"/>
+                            <constraint firstItem="QXy-RC-E6j" firstAttribute="centerY" secondItem="c74-Yj-ZuS" secondAttribute="centerY" id="Ypu-9p-HBU"/>
+                            <constraint firstItem="LFD-3s-ESE" firstAttribute="centerX" secondItem="8Ia-vG-DCo" secondAttribute="centerX" id="dNf-Q9-5z5"/>
+                            <constraint firstAttribute="bottom" secondItem="LfD-lQ-ivY" secondAttribute="bottom" id="fim-Qq-3Jv"/>
+                            <constraint firstItem="LfD-lQ-ivY" firstAttribute="top" secondItem="U0K-SW-4ec" secondAttribute="top" id="fwp-Yc-p9S"/>
+                            <constraint firstItem="BrB-h1-WRS" firstAttribute="width" secondItem="LfD-lQ-ivY" secondAttribute="width" id="grl-a3-bjY"/>
+                            <constraint firstItem="8Ia-vG-DCo" firstAttribute="width" secondItem="LfD-lQ-ivY" secondAttribute="width" multiplier="0.5" id="oKG-r4-egU"/>
+                            <constraint firstItem="BrB-h1-WRS" firstAttribute="top" secondItem="U0K-SW-4ec" secondAttribute="top" id="rJc-2c-zQA"/>
+                            <constraint firstItem="c74-Yj-ZuS" firstAttribute="width" secondItem="LfD-lQ-ivY" secondAttribute="width" multiplier="0.5" id="s8i-8O-8nF"/>
+                            <constraint firstAttribute="bottom" secondItem="8Ia-vG-DCo" secondAttribute="bottom" id="tHT-ac-9nV"/>
+                            <constraint firstItem="LFD-3s-ESE" firstAttribute="centerY" secondItem="8Ia-vG-DCo" secondAttribute="centerY" id="vZG-0b-E3h"/>
+                            <constraint firstItem="LfD-lQ-ivY" firstAttribute="leading" secondItem="U0K-SW-4ec" secondAttribute="leading" id="x2H-qh-hCw"/>
+                            <constraint firstItem="QXy-RC-E6j" firstAttribute="centerX" secondItem="c74-Yj-ZuS" secondAttribute="centerX" id="x8v-cD-JFC"/>
+                            <constraint firstItem="c74-Yj-ZuS" firstAttribute="leading" secondItem="U0K-SW-4ec" secondAttribute="leading" id="z1n-xM-hNS"/>
+                        </constraints>
+                        <viewLayoutGuide key="safeArea" id="fQZ-KI-GVf"/>
+                        <variation key="default">
+                            <mask key="constraints">
+                                <exclude reference="XyZ-9z-H8e"/>
+                            </mask>
+                        </variation>
+                    </view>
+                    <connections>
+                        <outlet property="leftView" destination="c74-Yj-ZuS" id="ISp-oG-XQe"/>
+                        <outlet property="rightView" destination="8Ia-vG-DCo" id="5fO-f8-G6j"/>
+                        <outlet property="sceneView" destination="BrB-h1-WRS" id="5nT-qQ-ynl"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="SZV-WD-TEh" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="-6" y="110"/>
+        </scene>
+    </scenes>
+    <resources>
+        <image name="basic_gunsight" width="200" height="200"/>
+    </resources>
+</document>
