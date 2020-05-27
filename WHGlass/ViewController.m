@@ -10,17 +10,20 @@
 
 @interface ViewController () <ARSCNViewDelegate>
 
-@property (nonatomic, strong) IBOutlet ARSCNView *sceneView;//AR 视图带背景视频
-@property (nonatomic, strong) SCNNode *shipNode;//AR 中的模型
+@property (nonatomic, strong) IBOutlet ARSCNView *sceneView;//AR 视图(带背景视频)
+@property (nonatomic, strong) SCNNode *shipNode;//AR 中的模型(可以用不包含内容的空node以节约性能)
+@property (nonatomic, copy) NSString *shipAnchorName;//AR 中放置物体的锚点名称
 
 @property (weak, nonatomic) IBOutlet SCNView *leftView;//左眼视图，黑色背景
 @property (weak, nonatomic) IBOutlet SCNView *rightView;//右眼视图，黑色背景
 
-@property (nonatomic, strong) SCNNode *headNode;//代表头部（手机）
+@property (nonatomic, strong) SCNNode *headNode;//代表头部（手机）,用来固定左右眼的同时移动
 @property (nonatomic, strong) SCNNode *leftCameraNode;//左眼相机所在的Node
-@property (nonatomic, strong) SCNNode *rightCameraNode;//右眼相机所在的 Node
+@property (nonatomic, strong) SCNNode *rightCameraNode;//右眼相机所在的Node
 @property (nonatomic, strong) SCNScene *sceneForEyes;//双目的场景，黑色背景
 @property (nonatomic, strong) SCNNode *shipNodeForEyes;//双目的模型
+@property (nonatomic, assign) simd_float4x4 shipNodeForEyesTransform;//双目中模型的位置（用于记录并和 AR 中同步，直接修改不同 scene 中的 node 位置可能会崩溃）
+@property (nonatomic, assign) simd_float4x4 headNodeForEyesTransform;//双目中头部的位置（用于记录并和 AR 中同步，直接修改不同 scene 中的 node 位置可能会崩溃）
 @end
 
     
@@ -30,6 +33,7 @@
     [super viewDidLoad];
     [[UIApplication sharedApplication] setIdleTimerDisabled:YES];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(enterBackGround) name:UIApplicationWillResignActiveNotification object:nil];
+    self.shipAnchorName = @"shipAnchor";
     [self setupScene];
     [self setupSceneViews];
 
@@ -64,7 +68,7 @@
     [headNode addChildNode:rightCameraNode];
     rightCameraNode.position = SCNVector3Make(0.03, 0, 0);//右眼在头部的位置
     
-    headNode.position = SCNVector3Make(0, 0, 0);
+    headNode.position = SCNVector3Make(0, 0, 0);//头部初始位置
     
     
     // create and add a light to the scene
@@ -97,7 +101,7 @@
     simd_float4x4 trans = simd_diagonal_matrix(simd_make_float4(1,1,1,1));
     trans.columns[3][2] -= 0.5;
     
-    ARAnchor *anchor = [[ARAnchor alloc] initWithName:@"base" transform:trans];
+    ARAnchor *anchor = [[ARAnchor alloc] initWithName:self.shipAnchorName transform:trans];
     [self.sceneView.session addAnchor:anchor];
     
     self.shipNode.simdTransform = simd_mul(self.shipNode.simdTransform, anchor.transform);
@@ -113,6 +117,7 @@
     leftView.playing = YES;
     // set the scene to the view
     leftView.scene = self.sceneForEyes;
+    leftView.delegate = self;
     
     // 左视图与左相机关联
     leftView.pointOfView = self.leftCameraNode;
@@ -127,6 +132,7 @@
     rightView.playing = YES;
     // set the scene to the view
     rightView.scene = self.sceneForEyes;
+    rightView.delegate = self;
     
     
     // 右视图与右相机关联
@@ -162,26 +168,30 @@
 #pragma mark - ARSCNViewDelegate
 // Override to create and configure nodes for anchors added to the view's session.
 - (SCNNode *)renderer:(id<SCNSceneRenderer>)renderer nodeForAnchor:(ARAnchor *)anchor {
-    if ([anchor.name isEqualToString:@"base"]) {
+    if ([anchor.name isEqualToString:self.shipAnchorName]) {
         return self.shipNode;
     }
     return nil;
 }
 
 -(void)renderer:(id<SCNSceneRenderer>)renderer didUpdateNode:(SCNNode *)node forAnchor:(ARAnchor *)anchor {
-    if ([anchor.name isEqualToString:@"base"]) {
-        dispatch_async(dispatch_get_main_queue(), ^{
-            self.shipNodeForEyes.simdTransform = node.simdTransform;
-            
-        });
+    // 记录 AR 中 shipNode 的位置变化（随 anchor 变化）
+    if ([anchor.name isEqualToString:self.shipAnchorName]) {
+        if (renderer == self.sceneView) {
+            self.shipNodeForEyesTransform = node.simdTransform;
+        }
     }
 }
 
 - (void)renderer:(id <SCNSceneRenderer>)renderer willRenderScene:(SCNScene *)scene atTime:(NSTimeInterval)time {
-    dispatch_async(dispatch_get_main_queue(), ^{
-        self.headNode.simdTransform = renderer.pointOfView.childNodes.firstObject.simdWorldTransform;
-            
-    });
+    //renderer可能是self.sceneView，self.leftView，self.rightView
+    if (renderer == self.sceneView) {// 记录 AR 中 相机 的位置变化
+        self.headNodeForEyesTransform = renderer.pointOfView.childNodes.firstObject.simdWorldTransform;
+    } else {// 同步 双目 中 shipNode 和 相机 的位置变化
+        self.shipNodeForEyes.simdTransform = self.shipNodeForEyesTransform;
+        self.headNode.simdTransform = self.headNodeForEyesTransform;
+    }
+    
 }
 - (void)session:(ARSession *)session didFailWithError:(NSError *)error {
     // Present an error message to the user
